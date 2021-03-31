@@ -29,11 +29,10 @@ namespace RestSharpPGDemo
         [TestMethod]
         public void GetAllUsers()
         {
-            //Arrange
             var response = _usersService.GetUsers();
-            //Act
+
             var users = response.Data.data;
-            //Assert
+            
             Assert.IsTrue(response.StatusCode == System.Net.HttpStatusCode.OK);
             Assert.IsTrue(users.Count==6);
             Assert.AreEqual("Michael", users[0].first_name);

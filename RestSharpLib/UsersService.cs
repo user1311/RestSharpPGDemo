@@ -8,6 +8,8 @@ namespace RestSharpLib
 {
     public class UsersService
     {
+        #region init
+
         private const string BaseUrl = "https://reqres.in";
         public RestClient client { get; set; }
         public UsersService()
@@ -16,10 +18,14 @@ namespace RestSharpLib
             client.UseNewtonsoftJson();
         }
 
+        #endregion
+
+        #region methods
+
         public IRestResponse<Users> GetUsers()
         {
             //Create request
-            var request = new RestRequest("/api/users",Method.GET,DataFormat.Json);
+            var request = new RestRequest("/api/users");
             request.AddQueryParameter("page", "2");
            
             //Execute request and return response
@@ -30,7 +36,7 @@ namespace RestSharpLib
         public IRestResponse<SingleUser> GetUser(int Id)
         {
             //Create GET request with id parameter
-            var request = new RestRequest("/api/users/" + Id,Method.GET,DataFormat.Json);
+            var request = new RestRequest("/api/users/" + Id);
 
             var response = client.Get<SingleUser>(request);
             return response;
@@ -39,8 +45,9 @@ namespace RestSharpLib
         public IRestResponse<UpsertUserDTO> CreateUser(UpsertUserDTO user)
         {
             // Create POST request and add request body
-            var request = new RestRequest("/api/users", Method.POST,DataFormat.Json);
+            var request = new RestRequest("/api/users");
             request.AddJsonBody(user);
+
             var response = client.Post<UpsertUserDTO>(request);
             return response;
 
@@ -75,7 +82,7 @@ namespace RestSharpLib
         public IRestResponse<AuthUserDTO> RegisterUser(AuthUserDTO user)
         {
             //Create request with BasicAuthorization
-            var request = new RestRequest("/api/register", Method.POST, DataFormat.Json);
+            var request = new RestRequest("/api/register");
             request.AddJsonBody(user);
             var response = client.Post<AuthUserDTO>(request);
             return response;
@@ -86,9 +93,11 @@ namespace RestSharpLib
             //Create request with BasicAuthorization
             client.Authenticator = new SimpleAuthenticator("email", user.email, "password", user.password);
 
-            var request = new RestRequest("/api/login", Method.POST, DataFormat.Json);
+            var request = new RestRequest("/api/login");
             var response = client.Post<AuthUserDTO>(request);
             return response;
         }
+
+        #endregion
     }
 }
